@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>National Higher Education Finder — Mobile Friendly</title>
+  <style>
+    :root {
+      --bg: #f6f8fb;
+      --card: #ffffff;
+      --muted: #6b7280;
+      --accent: #0f6cff;
+      --nit: #f97316;
+      --du: #16a34a;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto,
+        "Helvetica Neue", Arial;
+      background: var(--bg);
+      color: #0f172a;
+    }
+
+    .app {
+      max-width: 1000px;
+      margin: 18px auto;
+      padding: 14px;
+    }
+
+    header {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    h1 {
+      font-size: 1.05rem;
+      margin: 0;
+    }
+
+    .controls {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .search,
+    .select,
+    .sort {
+      flex: 1;
+      min-width: 120px;
+    }
+
+    input[type="search"],
+    select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #e6e9ef;
+      background: #fff;
+    }
+
+    .list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    @media (max-width: 640px) {
+      .list {
+        grid-template-columns: 1fr;
+      }
+
+      .controls {
+        flex-direction: column;
+      }
+    }
+
+    .card {
+      background: var(--card);
+      padding: 12px;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(15, 18, 40, 0.06);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .name {
+      font-weight: 600;
+    }
+
+    .state {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn {
+      border: 0;
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .link {
+      background: transparent;
+      border: 1px solid #e6e9ef;
+      color: var(--muted);
+    }
+
+    .empty {
+      padding: 28px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    footer {
+      margin-top: 18px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .pill {
+      background: #eef5ff;
+      padding: 6px 8px;
+      border-radius: 999px;
+      font-weight: 600;
+      color: var(--accent);
+      font-size: 0.82rem;
+    }
+
+    .tag {
+      background: #f3f4f6;
+      padding: 6px 8px;
+      border-radius: 8px;
+      font-weight: 600;
+      color: #374151;
+      font-size: 0.75rem;
+    }
+
+    .tag.IIT {
+      background: rgba(15, 108, 255, 0.12);
+      color: var(--accent);
+    }
+
+    .tag.NIT {
+      background: rgba(249, 115, 22, 0.1);
+      color: var(--nit);
+    }
+
+    .tag.DU {
+      background: rgba(22, 163, 74, 0.1);
+      color: var(--du);
+    }
+
+    .tag.CU {
+      background: rgba(155, 81, 224, 0.1);
+      color: #9b51e0;
+    }
+
+    .tag.PRIVATE {
+      background: rgba(255, 105, 180, 0.1);
+      color: #ff69b4;
+    }
+
+    /* simple modal */
+    .modal {
+      position: fixed;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(2, 6, 23, 0.5);
+      padding: 20px;
+    }
+
+    .modal.open {
+      display: flex;
+    }
+
+    .modal-card {
+      background: #fff;
+      padding: 18px;
+      border-radius: 12px;
+      max-width: 720px;
+      width: 100%;
+    }
+
+    .modal-card h2 {
+      margin: 0 0 8px;
+    }
+
+    .grid-two {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .grid-two>div {
+      flex: 1;
+      min-width: 150px;
+    }
+
+    .small {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <header>
+      <div>
+        <h1>National Higher Education Finder</h1>
+        <div class="small">
+          Unified directory of IITs, NITs and Delhi University colleges and CU in India.
+        </div>
+      </div>
+      <div class="pill" id="count">-- institutes</div>
+    </header>
+
+    <div class="controls" role="region" aria-label="Search and filters">
+      <input id="search" class="search" type="search"
+        placeholder="Search by name, abbreviation, or state/city (e.g. IITB, NITW, Miranda)" />
+      <select id="typeFilter" class="select" aria-label="Filter by type">
+        <option value="">All Types</option>
+         <option value="DU">DU</option>
+        <option value="IIT">IIT</option>
+        <option value="NIT">NIT</option>
+        <option value="CU">CU</option>
+        <option value="PRIVATE">Private</option>
+      </select>
+      <select id="stateFilter" class="select" aria-label="Filter by state">
+        <option value="">All States / UTs</option>
+      </select>
+      <select id="sortBy" class="sort" aria-label="Sort results">
+        <option value="name">Sort: Name (A→Z)</option>
+        <option value="type">Sort: Type</option>
+        <option value="state">Sort: State</option>
+        <option value="est">Sort: Established (old→new)</option>
+      </select>
+    </div>
+
+    <main id="results" class="list" aria-live="polite"></main>
+    <div id="pagination" style="margin-top:16px; text-align:center;">
+      <button id="prevPage" class="btn link" style="margin-right:8px;">← Prev</button>
+      <span id="pageInfo">Page 1</span>
+      <button id="nextPage" class="btn link" style="margin-left:8px;">Next →</button>
+    </div>
+    <div id="empty" class="empty" hidden>No results found.</div>
+
+    <footer>
+      <small>Dataset: consolidated snapshot of IITs, NITs and DU colleges. Source: Delhi University colleges list and
+        institute portals. Validate before publication.</small>
+    </footer>
+  </div>
+
+  <!-- modal -->
+  <div id="modal" class="modal" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <button id="closeModal"
+        style="float: right; background: transparent; border: 0; font-weight: 700; cursor: pointer;">✕</button>
+      <h2 id="modalName">Institute Name</h2>
+      <div class="grid-two">
+        <div>
+          <div class="small">Abbreviation</div>
+          <div id="modalAbbr"></div>
+          <div class="small">Type</div>
+          <div id="modalType"></div>
+          <div class="small">State / City</div>
+          <div id="modalState"></div>
+        </div>
+        <div>
+          <div class="small">Established</div>
+          <div id="modalYear"></div>
+          <div class="small">Website</div>
+          <div id="modalSite"></div>
+        </div>
+      </div>
+      <p id="modalNote" class="small" style="margin-top: 12px; color: var(--muted)"></p>
+    </div>
+  </div>
+
+  <script>
+    const institutes = [
+      // IITs
+      { name: 'IIT Kharagpur', abbr: 'IITKGP', type: 'IIT', state: 'West Bengal', est: 1951, site: 'https://www.iitkgp.ac.in' },
+      { name: 'IIT Bombay', abbr: 'IITB', type: 'IIT', state: 'Maharashtra', est: 1958, site: 'https://www.iitb.ac.in' },
+      { name: 'IIT Kanpur', abbr: 'IITK', type: 'IIT', state: 'Uttar Pradesh', est: 1959, site: 'https://www.iitk.ac.in' },
+      { name: 'IIT Madras', abbr: 'IITM', type: 'IIT', state: 'Tamil Nadu', est: 1959, site: 'https://www.iitm.ac.in' },
+      { name: 'IIT Delhi', abbr: 'IITD', type: 'IIT', state: 'Delhi', est: 1961, site: 'https://home.iitd.ac.in' },
+      { name: 'IIT Guwahati', abbr: 'IITG', type: 'IIT', state: 'Assam', est: 1994, site: 'https://www.iitg.ac.in' },
+      { name: 'IIT Roorkee', abbr: 'IITR', type: 'IIT', state: 'Uttarakhand', est: 1847, site: 'https://www.iitr.ac.in' },
+      { name: 'IIT Jodhpur', abbr: 'IITJ', type: 'IIT', state: 'Rajasthan', est: 2008, site: 'https://www.iitj.ac.in' },
+      { name: 'IIT Ropar', abbr: 'IITRPR', type: 'IIT', state: 'Punjab', est: 2008, site: 'https://www.iitrpr.ac.in' },
+      { name: 'IIT Gandhinagar', abbr: 'IITGN', type: 'IIT', state: 'Gujarat', est: 2008, site: 'https://www.iitgn.ac.in' },
+      { name: 'IIT Hyderabad', abbr: 'IITH', type: 'IIT', state: 'Telangana', est: 2008, site: 'https://iith.ac.in' },
+      { name: 'IIT (BHU) Varanasi', abbr: 'IITBHU', type: 'IIT', state: 'Uttar Pradesh', est: 1919, site: 'https://www.iitbhu.ac.in' },
+      { name: 'IIT Indore', abbr: 'IITI', type: 'IIT', state: 'Madhya Pradesh', est: 2009, site: 'https://www.iiti.ac.in' },
+      { name: 'IIT Bhubaneswar', abbr: 'IITBBS', type: 'IIT', state: 'Odisha', est: 2008, site: 'https://www.iitbbs.ac.in' },
+      { name: 'IIT Patna', abbr: 'IITP', type: 'IIT', state: 'Bihar', est: 2008, site: 'https://www.iitp.ac.in' },
+      { name: 'IIT Mandi', abbr: 'IITMD', type: 'IIT', state: 'Himachal Pradesh', est: 2009, site: 'https://iitmandi.ac.in' },
+      { name: 'IIT (ISM) Dhanbad', abbr: 'IITISM', type: 'IIT', state: 'Jharkhand', est: 1926, site: 'https://www.iitism.ac.in' },
+      { name: 'IIT Tirupati', abbr: 'IITTP', type: 'IIT', state: 'Andhra Pradesh', est: 2015, site: 'https://www.iittp.ac.in' },
+      { name: 'IIT Palakkad', abbr: 'IITPKD', type: 'IIT', state: 'Kerala', est: 2015, site: 'https://iitpkd.ac.in' },
+      { name: 'IIT Bhilai', abbr: 'IITBH', type: 'IIT', state: 'Chhattisgarh', est: 2016, site: 'https://www.iitbhilai.ac.in' },
+      { name: 'IIT Dharwad', abbr: 'IITDH', type: 'IIT', state: 'Karnataka', est: 2016, site: 'https://www.iitdh.ac.in' },
+      { name: 'IIT Jammu', abbr: 'IITJMU', type: 'IIT', state: 'Jammu & Kashmir', est: 2016, site: 'https://www.iitjammu.ac.in' },
+      { name: 'IIT Goa', abbr: 'IITGOA', type: 'IIT', state: 'Goa', est: 2016, site: 'https://iitgoa.ac.in' },
+      // NITs
+      { name: 'NIT Karnataka, Surathkal', abbr: 'NITK', type: 'NIT', state: 'Karnataka', est: 1960, site: 'https://www.nitk.ac.in' },
+      { name: 'NIT Warangal', abbr: 'NITW', type: 'NIT', state: 'Telangana', est: 1959, site: 'https://www.nitw.ac.in' },
+      { name: 'Malaviya National Institute of Technology, Jaipur', abbr: 'MNIT', type: 'NIT', state: 'Rajasthan', est: 1963, site: 'https://www.mnit.ac.in' },
+      { name: 'Maulana Azad National Institute of Technology, Bhopal', abbr: 'MANIT', type: 'NIT', state: 'Madhya Pradesh', est: 1960, site: 'https://www.manit.ac.in' },
+      { name: 'Motilal Nehru National Institute of Technology, Allahabad', abbr: 'MNNIT', type: 'NIT', state: 'Uttar Pradesh', est: 1961, site: 'https://www.mnnit.ac.in' },
+      { name: 'Visvesvaraya National Institute of Technology, Nagpur', abbr: 'VNIT', type: 'NIT', state: 'Maharashtra', est: 1960, site: 'https://www.vnit.ac.in' },
+      { name: 'NIT Durgapur', abbr: 'NITDGP', type: 'NIT', state: 'West Bengal', est: 1960, site: 'https://www.nitdgp.ac.in' },
+      { name: 'NIT Jamshedpur', abbr: 'NITJSR', type: 'NIT', state: 'Jharkhand', est: 1960, site: 'https://www.nitjsr.ac.in' },
+      { name: 'NIT Srinagar', abbr: 'NITSRI', type: 'NIT', state: 'Jammu & Kashmir', est: 1960, site: 'https://www.nitsri.ac.in' },
+      { name: 'NIT Jalandhar', abbr: 'NITJ', type: 'NIT', state: 'Punjab', est: 1987, site: 'https://www.nitj.ac.in' },
+      { name: 'NIT Patna', abbr: 'NITP', type: 'NIT', state: 'Bihar', est: 1886, site: 'https://www.nitp.ac.in' },
+      { name: 'NIT Raipur', abbr: 'NITRR', type: 'NIT', state: 'Chhattisgarh', est: 1956, site: 'https://www.nitrr.ac.in' },
+      { name: 'NIT Agartala', abbr: 'NITA', type: 'NIT', state: 'Tripura', est: 1965, site: 'https://www.nita.ac.in' },
+      { name: 'NIT Arunachal Pradesh', abbr: 'NITAP', type: 'NIT', state: 'Arunachal Pradesh', est: 2010, site: 'https://www.nitap.ac.in' },
+      { name: 'NIT Delhi', abbr: 'NITD', type: 'NIT', state: 'Delhi', est: 2010, site: 'https://www.nitdelhi.ac.in' },
+      { name: 'NIT Goa', abbr: 'NITG', type: 'NIT', state: 'Goa', est: 2010, site: 'https://www.nitg.ac.in' },
+      { name: 'NIT Manipur', abbr: 'NITMN', type: 'NIT', state: 'Manipur', est: 2010, site: 'https://www.nitmanipur.ac.in' },
+      { name: 'NIT Meghalaya', abbr: 'NITM', type: 'NIT', state: 'Meghalaya', est: 2010, site: 'https://www.nitm.ac.in' },
+      { name: 'NIT Mizoram', abbr: 'NITMZ', type: 'NIT', state: 'Mizoram', est: 2010, site: 'https://www.nitmz.ac.in' },
+      { name: 'NIT Nagaland', abbr: 'NITN', type: 'NIT', state: 'Nagaland', est: 2010, site: 'https://www.nitnagaland.ac.in' },
+      { name: 'NIT Puducherry', abbr: 'NITPY', type: 'NIT', state: 'Puducherry', est: 2010, site: 'https://www.nitpy.ac.in' },
+      { name: 'NIT Sikkim', abbr: 'NITSKM', type: 'NIT', state: 'Sikkim', est: 2010, site: 'https://www.nitsikkim.ac.in' },
+      { name: 'NIT Uttarakhand', abbr: 'NITUK', type: 'NIT', state: 'Uttarakhand', est: 2010, site: 'https://nituk.ac.in' },
+      { name: 'NIT Andhra Pradesh', abbr: 'NITANP', type: 'NIT', state: 'Andhra Pradesh', est: 2015, site: 'https://nitandhra.ac.in' },
+      { name: 'NIT Silchar', abbr: 'NITSCL', type: 'NIT', state: 'Assam', est: 1967, site: 'https://www.nits.ac.in' },
+      { name: 'NIT Kurukshetra', abbr: 'NITKKR', type: 'NIT', state: 'Haryana', est: 1963, site: 'https://nitkkr.ac.in' },
+      { name: 'NIT Rourkela', abbr: 'NITR', type: 'NIT', state: 'Odisha', est: 1961, site: 'https://www.nitrkl.ac.in' },
+      { name: 'NIT Calicut', abbr: 'NITC', type: 'NIT', state: 'Kerala', est: 1961, site: 'https://www.nitc.ac.in' },
+      { name: 'NIT Tiruchirappalli', abbr: 'NITT', type: 'NIT', state: 'Tamil Nadu', est: 1964, site: 'https://www.nitt.edu' },
+      { name: 'SVNIT Surat', abbr: 'SVNIT', type: 'NIT', state: 'Gujarat', est: 1961, site: 'https://www.svnit.ac.in' },
+      //Central Universities (for future expansion)
+      { name: 'Jawaharlal Nehru University', abbr: 'JNU', type: 'CU', state: 'Delhi', est: 1969, site: 'https://www.jnu.ac.in' },
+      { name: 'University of Delhi', abbr: 'DU', type: 'CU', state: 'Delhi', est: 1922, site: 'https://www.du.ac.in' },
+      { name: 'Jamia Millia Islamia', abbr: 'JMI', type: 'CU', state: 'Delhi', est: 1920, site: 'https://www.jmi.ac.in' },
+      { name: 'University of Hyderabad', abbr: 'HCU', type: 'CU', state: 'Telangana', est: 1974, site: 'https://www.uohyd.ac.in' },
+      { name: 'Banaras Hindu University', abbr: 'BHU', type: 'CU', state: 'Uttar Pradesh', est: 1916, site: 'https://www.bhu.ac.in' },
+      // Top 10 private engineering colleges
+      { name: 'Birla Institute of Technology & Science, Pilani', abbr: 'BITS', type: 'PRIVATE', state: 'Rajasthan', est: 1964, site: 'https://www.bits-pilani.ac.in' },
+      { name: 'Vellore Institute of Technology', abbr: 'VIT', type: 'PRIVATE', state: 'Tamil Nadu', est: 1984, site: 'https://www.vit.ac.in' },
+      { name: 'Manipal Institute of Technology', abbr: 'MIT', type: 'PRIVATE', state: 'Karnataka', est: 1957, site: 'https://manipal.edu/mu/mit.html' },
+      { name: 'SRM Institute of Science and Technology', abbr: 'SRM', type: 'PRIVATE', state: 'Tamil Nadu', est: 1985, site: 'https://www.srmist.edu.in' },
+      { name: 'Amity University, Noida', abbr: 'AMITY', type: 'PRIVATE', state: 'Uttar Pradesh', est: 2005, site: 'https://www.amity.edu' },
+      { name: 'Thapar Institute of Engineering & Technology', abbr: 'THAPAR', type: 'PRIVATE', state: 'Punjab', est: 1956, site: 'https://www.thapar.edu' },
+      { name: 'Lovely Professional University', abbr: 'LPU', type: 'PRIVATE', state: 'Punjab', est: 2005, site: 'https://www.lpu.in' },
+      { name: 'Shiv Nadar University', abbr: 'SNU', type: 'PRIVATE', state: 'Uttar Pradesh', est: 2011, site: 'https://www.snu.edu.in' },
+      { name: 'Bennett University', abbr: 'BENNETT', type: 'PRIVATE', state: 'Uttar Pradesh', est: 2016, site: 'https://www.bennett.edu.in' },
+      { name: 'Symbiosis International University', abbr: 'SIU', type: 'PRIVATE', state: 'Maharashtra', est: 1971, site: 'https://www.syms.edu' },
+      { name: 'University of Petroleum and Energy Studies', abbr: 'UPES', type: 'PRIVATE', state: 'Uttarakhand', est: 2003, site: 'https://www.upes.ac.in' },
+
+      // DU Colleges (snapshot from DU official list)
+      { name: 'Aditi Mahavidyalaya', abbr: 'ADITI', type: 'DU', state: 'Delhi', est: null, site: '' },
+      { name: 'Acharya Narendra Dev College', abbr: 'ANDC', type: 'DU', state: 'Delhi', est: null, site: '' },
+      { name: 'Ahilya Bai College of Nursing', abbr: 'ABCON', type: 'DU', state: 'Delhi', est: null, site: '' },
+      { name: 'Aditi Mahavidyalaya (W)', abbr: 'ADITI', type: 'DU', state: 'Delhi', est: null, site: '' },
+      { name: 'Atma Ram Sanatan Dharma College', abbr: 'ARSD', type: 'DU', state: 'Delhi', est: null, site: 'https://www.arsdcollege.ac.in' },
+      { name: 'Aryabhatta College', abbr: 'ARBC', type: 'DU', state: 'Delhi', est: null, site: '' },
+      { name: 'Aurobindo College', abbr: 'AUR', type: 'DU', state: 'Delhi', est: null, site: 'https://www.aurobindo.du.ac.in' },
+      { name: 'Bhagini Nivedita College', abbr: 'BNC', type: 'DU', state: 'Delhi', est: null, site: '' },
+      { name: 'Bharati College', abbr: 'BHC', type: 'DU', state: 'Delhi', est: null, site: '' },
+      { name: 'Bhaskaracharya College of Applied Sciences', abbr: 'BCAS', type: 'DU', state: 'Delhi', est: null, site: '' },
+      { name: 'Bhim Rao Ambedkar College', abbr: 'BRAC', type: 'DU', state: 'Delhi', est: null, site: '' },
+      { name: 'College of Art', abbr: 'COLART', type: 'DU', state: 'Delhi', est: null, site: '' },
+      { name: 'College of Vocational Studies', abbr: 'CVS', type: 'DU', state: 'Delhi', est: null, site: '' },
+      { name: 'Daulat Ram College', abbr: 'DRC', type: 'DU', state: 'Delhi', est: null, site: 'https://www.dr.du.ac.in' },
+      { name: 'Delhi College of Arts & Commerce', abbr: 'DCAC', type: 'DU', state: 'Delhi', est: null, site: 'https://dcac.du.ac.in' },
+      { name: 'Deshbandhu College', abbr: 'DBC', type: 'DU', state: 'Delhi', est: null, site: 'https://www.deshbandhucollege.ac.in' },
+      { name: 'Deen Dayal Upadhyaya College', abbr: 'DDU', type: 'DU', state: 'Delhi', est: null, site: 'https://dducollegedu.ac.in' },
+      { name: 'Durga Bai Deshmukh College of Special Education', abbr: 'DBD', type: 'DU', state: 'Delhi', est: null, site: '' },
+      { name: 'Dyal Singh College', abbr: 'DSC', type: 'DU', state: 'Delhi', est: null, site: 'https://www.dsc.du.ac.in' },
+      { name: 'Dyal Singh College (Evening)', abbr: 'DSCE', type: 'DU', state: 'Delhi', est: null, site: 'https://www.dsce.du.ac.in' },
+      { name: 'Gargi College', abbr: 'GARGI', type: 'DU', state: 'Delhi', est: null, site: 'https://gargicollege.in' },
+      { name: 'Hans Raj College', abbr: 'HANS', type: 'DU', state: 'Delhi', est: null, site: 'https://www.hansrajcollege.ac.in' },
+      { name: 'Hindu College', abbr: 'HINDU', type: 'DU', state: 'Delhi', est: 1899, site: 'https://www.hinducollege.ac.in' },
+      { name: 'Holy Family College of Nursing', abbr: 'HFCN', type: 'DU', state: 'Delhi', est: null, site: '' },
+      { name: 'Indira Gandhi Institute of Physical Education & Sports Sciences', abbr: 'IGIPESS', type: 'DU', state: 'Delhi', est: null, site: 'https://igipess.du.ac.in' },
+      { name: 'Indraprastha College for Women', abbr: 'IP', type: 'DU', state: 'Delhi', est: null, site: 'https://www.ipcollege.ac.in' },
+      { name: 'Institute of Home Economics', abbr: 'IHE', type: 'DU', state: 'Delhi', est: null, site: 'https://ihe.du.ac.in' },
+      { name: 'Janki Devi Memorial College', abbr: 'JDM', type: 'DU', state: 'Delhi', est: null, site: 'https://jdm.du.ac.in' },
+      { name: 'Jesus & Mary College', abbr: 'JMC', type: 'DU', state: 'Delhi', est: null, site: 'https://www.jmc.ac.in' },
+      { name: 'Kalindi College for Women', abbr: 'KALINDI', type: 'DU', state: 'Delhi', est: null, site: 'https://kalindi.du.ac.in' },
+      { name: 'Kamla Nehru College for Women', abbr: 'KNC', type: 'DU', state: 'Delhi', est: null, site: 'https://knc.du.ac.in' },
+      { name: 'Keshav Mahavidyalaya', abbr: 'KESHAV', type: 'DU', state: 'Delhi', est: null, site: 'https://keshav.du.ac.in' },
+      { name: 'Kirori Mal College', abbr: 'KMC', type: 'DU', state: 'Delhi', est: null, site: 'https://kmc.du.ac.in' },
+      { name: 'Lady Irwin College', abbr: 'LIR', type: 'DU', state: 'Delhi', est: null, site: 'https://ladyirwin.edu.in' },
+      { name: 'Lady Shri Ram College for Women', abbr: 'LSR', type: 'DU', state: 'Delhi', est: null, site: 'https://lsr.edu.in' },
+      { name: 'Lakshmibai College for Women', abbr: 'LBC', type: 'DU', state: 'Delhi', est: null, site: 'https://lakshmibaicollege.in' },
+      { name: 'Maharaja Agrasen College', abbr: 'MAC', type: 'DU', state: 'Delhi', est: null, site: 'https://mac.du.ac.in' },
+      { name: 'Maharshi Valmiki College of Education', abbr: 'MVCE', type: 'DU', state: 'Delhi', est: null, site: 'https://www.mvce.ac.in' },
+      { name: 'Maitreyi College for Women', abbr: 'MAITREYI', type: 'DU', state: 'Delhi', est: null, site: 'https://maitreyi.ac.in' },
+      { name: 'Mata Sundri College for Women', abbr: 'MSCW', type: 'DU', state: 'Delhi', est: null, site: 'https://mscw.ac.in' },
+      { name: 'Miranda House', abbr: 'MIRANDA', type: 'DU', state: 'Delhi', est: 1948, site: 'https://www.mirandahouse.ac.in' },
+      { name: 'Moti Lal Nehru College', abbr: 'MLN', type: 'DU', state: 'Delhi', est: null, site: 'https://www.mlncdu.ac.in' },
+      { name: 'Moti Lal Nehru College (Evening)', abbr: 'MLNE', type: 'DU', state: 'Delhi', est: null, site: 'https://www.mlnce.org' },
+      { name: 'P.G.D.A.V. College', abbr: 'PGDAV', type: 'DU', state: 'Delhi', est: null, site: 'https://www.pgdavcollege.in' },
+      { name: 'Rajdhani College', abbr: 'RAJDHANI', type: 'DU', state: 'Delhi', est: null, site: 'https://www.rajdhanicollege.ac.in' },
+      { name: 'Rajkumari Amrit Kaur College of Nursing', abbr: 'RAKCON', type: 'DU', state: 'Delhi', est: null, site: 'https://rakcon.com' },
+      { name: 'Ram Lal Anand College', abbr: 'RLAC', type: 'DU', state: 'Delhi', est: null, site: 'https://rlacollege.edu.in' },
+      { name: 'Ramanujan College', abbr: 'RAM', type: 'DU', state: 'Delhi', est: null, site: 'https://ramanujancollege.ac.in' },
+      { name: 'Ramjas College', abbr: 'RAMJAS', type: 'DU', state: 'Delhi', est: 1917, site: 'https://ramjas.du.ac.in' },
+      { name: 'Satyawati College', abbr: 'SATYA', type: 'DU', state: 'Delhi', est: null, site: 'https://satyawati.du.ac.in' },
+      { name: 'School of Open Learning (SOL)', abbr: 'SOL', type: 'DU', state: 'Delhi', est: null, site: 'https://sol.du.ac.in' },
+      { name: 'Shaheed Bhagat Singh College', abbr: 'SBSC', type: 'DU', state: 'Delhi', est: null, site: 'https://www.sbsc.in' },
+      { name: 'Shaheed Rajguru College of Applied Sciences for Women', abbr: 'SRCCASW', type: 'DU', state: 'Delhi', est: null, site: 'https://www.rajgurucollege.com' },
+      { name: 'Shaheed Sukhdev College of Business Studies', abbr: 'SSCBS', type: 'DU', state: 'Delhi', est: null, site: 'https://sscbs.du.ac.in' },
+      { name: 'Shivaji College', abbr: 'SHIVAJI', type: 'DU', state: 'Delhi', est: null, site: 'https://www.shivajicollege.ac.in' },
+      { name: 'Shri Ram College of Commerce', abbr: 'SRCC', type: 'DU', state: 'Delhi', est: null, site: 'https://www.srcc.edu' },
+      { name: 'Shyam Lal College', abbr: 'SLC', type: 'DU', state: 'Delhi', est: null, site: 'https://www.slc.du.ac.in' },
+      { name: 'Shyama Prasad Mukherji College for Women', abbr: 'SPM', type: 'DU', state: 'Delhi', est: null, site: 'https://spm.du.ac.in' },
+      { name: 'Sri Guru Gobind Singh College of Commerce', abbr: 'SGGSCC', type: 'DU', state: 'Delhi', est: null, site: 'https://www.sggscc.ac.in' },
+      { name: 'Sri Guru Nanak Dev Khalsa College', abbr: 'SGNDK', type: 'DU', state: 'Delhi', est: null, site: 'https://www.sgndkc.org' },
+      { name: 'Sri Guru Tegh Bahadur Khalsa College', abbr: 'SGTB', type: 'DU', state: 'Delhi', est: null, site: 'https://www.sgtbkhalsa.du.ac.in' },
+      { name: 'Sri Venkateswara College', abbr: 'SVC', type: 'DU', state: 'Delhi', est: null, site: 'https://www.svc.ac.in' },
+      { name: "St. Stephen's College", abbr: 'STST', type: 'DU', state: 'Delhi', est: null, site: 'https://www.ststephens.edu' },
+      { name: 'Swami Shraddhanand College', abbr: 'SSC', type: 'DU', state: 'Delhi', est: null, site: 'https://ss.du.ac.in' },
+      { name: 'Vivekananda College', abbr: 'VIVEK', type: 'DU', state: 'Delhi', est: null, site: 'https://www.vivekanandacollege.edu.in' },
+      { name: 'Zakir Husain Delhi College', abbr: 'ZAKIR', type: 'DU', state: 'Delhi', est: null, site: 'https://www.zakirhusaindelhicollege.ac.in' },
+      { name: 'Zakir Husain Post Graduate Evening College', abbr: 'ZHPEC', type: 'DU', state: 'Delhi', est: null, site: 'https://zhdce.ac.in' }
+    ];
+    // UI refs
+    const results = document.getElementById('results');
+    const empty = document.getElementById('empty');
+    const searchInput = document.getElementById('search');
+    const sortSelect = document.getElementById('sortBy');
+    const stateFilter = document.getElementById('stateFilter');
+    const typeFilter = document.getElementById('typeFilter');
+    const countPill = document.getElementById('count');
+    const pageInfo = document.getElementById('pageInfo');
+    const prevPageBtn = document.getElementById('prevPage');
+    const nextPageBtn = document.getElementById('nextPage');
+
+    // Pagination variables
+    let currentPage = 1;
+    const pageSize = 14;
+    let filteredInstitutes = [];
+
+    // Populate states dynamically
+    const stateSet = Array.from(new Set(institutes.map(i => i.state))).sort();
+    stateSet.forEach(s => { const o = document.createElement('option'); o.value = s; o.textContent = s; stateFilter.appendChild(o) });
+
+    function render(list) {
+      results.innerHTML = '';
+      countPill.textContent = `${list.length} institutes`;
+      if (!list.length) { empty.hidden = false; return; } empty.hidden = true;
+
+      const start = (currentPage - 1) * pageSize;
+      const end = start + pageSize;
+      const pageList = list.slice(start, end);
+
+      pageList.forEach(i => {
+        const card = document.createElement('article'); card.className = 'card';
+        const tagClass = `tag ${i.type}`;
+        card.innerHTML = `
+          <div class="meta">
+            <div>
+              <div class="name">${i.name}</div>
+              <div class="state">${i.abbr} · ${i.state} · <span class="${tagClass}">${i.type}</span></div>
+            </div>
+            <div class="actions">
+              <a class="btn link" href="${i.site || '#'}" target="_blank" rel="noopener">Website</a>
+              <button class="btn" data-abbr="${i.abbr}">Details</button>
+            </div>
+          </div>
+        `;
+        results.appendChild(card);
+      });
+
+      attachDetailHandlers();
+      pageInfo.textContent = `Page ${currentPage} of ${Math.ceil(list.length / pageSize)}`;
+    }
+
+    function applyFilters() {
+      const q = searchInput.value.trim().toLowerCase();
+      const state = stateFilter.value;
+      const type = typeFilter.value;
+
+      filteredInstitutes = institutes.filter(i => {
+        const hit = ((i.name || '') + ' ' + (i.abbr || '') + ' ' + (i.state || '') + ' ' + (i.type || '')).toLowerCase();
+        return (!q || hit.includes(q)) && (!state || i.state === state) && (!type || i.type === type);
+      });
+
+      const sortBy = sortSelect.value;
+      if (sortBy === 'name') filteredInstitutes.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+      if (sortBy === 'state') filteredInstitutes.sort((a, b) => (a.state || '').localeCompare(b.state || ''));
+      if (sortBy === 'est') filteredInstitutes.sort((a, b) => (a.est || 9999) - (b.est || 9999));
+      if (sortBy === 'type') filteredInstitutes.sort((a, b) => (a.type || '').localeCompare(b.type || '') || (a.name || '').localeCompare(b.name || ''));
+
+      currentPage = 1;
+      render(filteredInstitutes);
+    }
+
+    // Pagination buttons
+    prevPageBtn.addEventListener('click', () => { if (currentPage > 1) { currentPage--; render(filteredInstitutes); } });
+    nextPageBtn.addEventListener('click', () => { if (currentPage < Math.ceil(filteredInstitutes.length / pageSize)) { currentPage++; render(filteredInstitutes); } });
+
+    // Modal handlers
+    const modal = document.getElementById('modal');
+    const modalName = document.getElementById('modalName');
+    const modalAbbr = document.getElementById('modalAbbr');
+    const modalType = document.getElementById('modalType');
+    const modalState = document.getElementById('modalState');
+    const modalYear = document.getElementById('modalYear');
+    const modalSite = document.getElementById('modalSite');
+    const modalNote = document.getElementById('modalNote');
+    document.getElementById('closeModal').addEventListener('click', () => modal.classList.remove('open'));
+    modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('open'); });
+
+    function attachDetailHandlers() {
+      document.querySelectorAll('button[data-abbr]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const abbr = btn.getAttribute('data-abbr');
+          const info = institutes.find(i => i.abbr === abbr);
+          if (!info) return;
+          modalName.textContent = info.name || '--';
+          modalAbbr.textContent = info.abbr || '--';
+          modalType.textContent = info.type || '--';
+          modalState.textContent = info.state || '--';
+          modalYear.textContent = info.est || '--';
+          modalSite.innerHTML = info.site ? `<a href="${info.site}" target="_blank">${info.site}</a>` : '--';
+          modalNote.textContent = 'Note: Verify before using the dataset for official purposes.';
+          modal.classList.add('open');
+        });
+      });
+    }
+
+    [searchInput, stateFilter, sortSelect, typeFilter].forEach(el => el.addEventListener('input', applyFilters));
+
+    applyFilters(); // initial render
+  </script>
+</body>
+
+</html>
