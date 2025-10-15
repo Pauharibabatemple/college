@@ -252,7 +252,7 @@
         placeholder="Search by name, abbreviation, or state/city (e.g. IITB, NITW, Miranda)" />
       <select id="typeFilter" class="select" aria-label="Filter by type">
         <option value="">All Types</option>
-         <option value="DU">DU</option>
+        <option value="DU">DU</option>
         <option value="IIT">IIT</option>
         <option value="NIT">NIT</option>
         <option value="CU">CU</option>
@@ -278,7 +278,8 @@
     <div id="empty" class="empty" hidden>No results found.</div>
 
     <footer>
-      <small>Dataset: consolidated snapshot of IITs, NITs and DU colleges. Source: Delhi University colleges list.</small>
+      <small>Dataset: consolidated snapshot of IITs, NITs and DU colleges. Source: Delhi University colleges
+        list.</small>
     </footer>
   </div>
 
@@ -365,13 +366,64 @@
       { name: 'NIT Calicut', abbr: 'NITC', type: 'NIT', state: 'Kerala', est: 1961, site: 'https://www.nitc.ac.in' },
       { name: 'NIT Tiruchirappalli', abbr: 'NITT', type: 'NIT', state: 'Tamil Nadu', est: 1964, site: 'https://www.nitt.edu' },
       { name: 'SVNIT Surat', abbr: 'SVNIT', type: 'NIT', state: 'Gujarat', est: 1961, site: 'https://www.svnit.ac.in' },
-      //Central Universities (for future expansion)
-      { name: 'Jawaharlal Nehru University', abbr: 'JNU', type: 'CU', state: 'Delhi', est: 1969, site: 'https://www.jnu.ac.in' },
-      { name: 'University of Delhi', abbr: 'DU', type: 'CU', state: 'Delhi', est: 1922, site: 'https://www.du.ac.in' },
-      { name: 'Jamia Millia Islamia', abbr: 'JMI', type: 'CU', state: 'Delhi', est: 1920, site: 'https://www.jmi.ac.in' },
-      { name: 'University of Hyderabad', abbr: 'HCU', type: 'CU', state: 'Telangana', est: 1974, site: 'https://www.uohyd.ac.in' },
+      // Central Universities (All India)
+
+      { name: 'Aligarh Muslim University', abbr: 'AMU', type: 'CU', state: 'Uttar Pradesh', est: 1920, site: 'https://www.amu.ac.in' },
+      { name: 'Assam University', abbr: 'AU', type: 'CU', state: 'Assam', est: 1994, site: 'https://www.aus.ac.in' },
+      { name: 'Babasaheb Bhimrao Ambedkar University', abbr: 'BBAU', type: 'CU', state: 'Uttar Pradesh', est: 1996, site: 'https://www.bbau.ac.in' },
       { name: 'Banaras Hindu University', abbr: 'BHU', type: 'CU', state: 'Uttar Pradesh', est: 1916, site: 'https://www.bhu.ac.in' },
-      // Top 10 private engineering colleges
+      { name: 'Central Agricultural University', abbr: 'CAU', type: 'CU', state: 'Manipur', est: 1993, site: 'https://www.cau.ac.in' },
+      { name: 'Central Sanskrit University', abbr: 'CSU', type: 'CU', state: 'Delhi', est: 1970, site: 'https://www.sanskrit.nic.in' },
+      { name: 'Central Tribal University of Andhra Pradesh', abbr: 'CTUAP', type: 'CU', state: 'Andhra Pradesh', est: 2019, site: 'https://www.ctuap.ac.in' },
+      { name: 'Central University of Andhra Pradesh', abbr: 'CUAP', type: 'CU', state: 'Andhra Pradesh', est: 2018, site: 'https://www.cuap.ac.in' },
+      { name: 'Central University of Gujarat', abbr: 'CUG', type: 'CU', state: 'Gujarat', est: 2009, site: 'https://www.cug.ac.in' },
+      { name: 'Central University of Haryana', abbr: 'CUH', type: 'CU', state: 'Haryana', est: 2009, site: 'https://www.cuh.ac.in' },
+      { name: 'Central University of Himachal Pradesh', abbr: 'CUHP', type: 'CU', state: 'Himachal Pradesh', est: 2009, site: 'https://www.cuhimachal.ac.in' },
+      { name: 'Central University of Jammu', abbr: 'CUJ', type: 'CU', state: 'Jammu & Kashmir', est: 2009, site: 'https://www.cujammu.ac.in' },
+      { name: 'Central University of Jharkhand', abbr: 'CUJH', type: 'CU', state: 'Jharkhand', est: 2009, site: 'https://www.cuj.ac.in' },
+      { name: 'Central University of Karnataka', abbr: 'CUK', type: 'CU', state: 'Karnataka', est: 2009, site: 'https://www.cuk.ac.in' },
+      { name: 'Central University of Kashmir', abbr: 'CUKA', type: 'CU', state: 'Jammu & Kashmir', est: 2009, site: 'https://www.cukashmir.ac.in' },
+      { name: 'Central University of Kerala', abbr: 'CUKL', type: 'CU', state: 'Kerala', est: 2009, site: 'https://www.cukerala.ac.in' },
+      { name: 'Central University of Odisha', abbr: 'CUO', type: 'CU', state: 'Odisha', est: 2009, site: 'https://www.cuo.ac.in' },
+      { name: 'Central University of Punjab', abbr: 'CUPB', type: 'CU', state: 'Punjab', est: 2009, site: 'https://www.cup.edu.in' },
+      { name: 'Central University of Rajasthan', abbr: 'CURAJ', type: 'CU', state: 'Rajasthan', est: 2009, site: 'https://www.curaj.ac.in' },
+      { name: 'Central University of South Bihar', abbr: 'CUSB', type: 'CU', state: 'Bihar', est: 2009, site: 'https://www.cusb.ac.in' },
+      { name: 'Central University of Tamil Nadu', abbr: 'CUTN', type: 'CU', state: 'Tamil Nadu', est: 2009, site: 'https://www.cutn.ac.in' },
+      { name: 'Dr. Harisingh Gour Vishwavidyalaya', abbr: 'DHGV', type: 'CU', state: 'Madhya Pradesh', est: 1946, site: 'https://www.dhsgsu.edu.in' },
+      { name: 'English and Foreign Languages University', abbr: 'EFLU', type: 'CU', state: 'Telangana', est: 1958, site: 'https://www.efluniversity.ac.in' },
+      { name: 'Guru Ghasidas Vishwavidyalaya', abbr: 'GGU', type: 'CU', state: 'Chhattisgarh', est: 1983, site: 'https://www.ggu.ac.in' },
+      { name: 'Hemwati Nandan Bahuguna Garhwal University', abbr: 'HNBGU', type: 'CU', state: 'Uttarakhand', est: 1973, site: 'https://www.hnbgu.ac.in' },
+      { name: 'Indira Gandhi National Open University', abbr: 'IGNOU', type: 'CU', state: 'Delhi', est: 1985, site: 'https://www.ignou.ac.in' },
+      { name: 'Jamia Millia Islamia', abbr: 'JMI', type: 'CU', state: 'Delhi', est: 1920, site: 'https://www.jmi.ac.in' },
+      { name: 'Jawaharlal Nehru University', abbr: 'JNU', type: 'CU', state: 'Delhi', est: 1969, site: 'https://www.jnu.ac.in' },
+      { name: 'Mahatma Gandhi Antarrashtriya Hindi Vishwavidyalaya', abbr: 'MGAHV', type: 'CU', state: 'Maharashtra', est: 1997, site: 'https://www.hindivishwa.org' },
+      { name: 'Mahatma Gandhi Central University', abbr: 'MGCU', type: 'CU', state: 'Bihar', est: 2016, site: 'https://www.mgcub.ac.in' },
+      { name: 'Manipur University', abbr: 'MU', type: 'CU', state: 'Manipur', est: 1980, site: 'https://www.manipuruniv.ac.in' },
+      { name: 'Maulana Azad National Urdu University', abbr: 'MANUU', type: 'CU', state: 'Telangana', est: 1998, site: 'https://www.manuu.edu.in' },
+      { name: 'Mizoram University', abbr: 'MZU', type: 'CU', state: 'Mizoram', est: 2001, site: 'https://www.mzu.edu.in' },
+      { name: 'Nagaland University', abbr: 'NU', type: 'CU', state: 'Nagaland', est: 1994, site: 'https://www.nagalanduniversity.ac.in' },
+      { name: 'North Eastern Hill University', abbr: 'NEHU', type: 'CU', state: 'Meghalaya', est: 1973, site: 'https://www.nehu.ac.in' },
+      { name: 'Pondicherry University', abbr: 'PU', type: 'CU', state: 'Puducherry', est: 1985, site: 'https://www.pondiuni.edu.in' },
+      { name: 'Rajiv Gandhi University', abbr: 'RGU', type: 'CU', state: 'Arunachal Pradesh', est: 1984, site: 'https://www.rgu.ac.in' },
+      { name: 'Rajiv Gandhi National Aviation University', abbr: 'RGNAU', type: 'CU', state: 'Uttar Pradesh', est: 2013, site: 'https://www.rgnau.ac.in' },
+      { name: 'Sikkim University', abbr: 'SU', type: 'CU', state: 'Sikkim', est: 2007, site: 'https://www.cus.ac.in' },
+      { name: 'Tezpur University', abbr: 'TU', type: 'CU', state: 'Assam', est: 1994, site: 'https://www.tezu.ernet.in' },
+      { name: 'Tripura University', abbr: 'TRU', type: 'CU', state: 'Tripura', est: 1987, site: 'https://www.tripurauniv.ac.in' },
+      { name: 'University of Allahabad', abbr: 'UoA', type: 'CU', state: 'Uttar Pradesh', est: 1887, site: 'https://www.allduniv.ac.in' },
+      { name: 'University of Delhi', abbr: 'DU', type: 'CU', state: 'Delhi', est: 1922, site: 'https://www.du.ac.in' },
+      { name: 'University of Hyderabad', abbr: 'UoH', type: 'CU', state: 'Telangana', est: 1974, site: 'https://www.uohyd.ac.in' },
+      { name: 'Visva-Bharati University', abbr: 'VB', type: 'CU', state: 'West Bengal', est: 1921, site: 'https://www.visvabharati.ac.in' },
+      { name: 'Central University of Gujarat', abbr: 'CUG', type: 'CU', state: 'Gujarat', est: 2009, site: 'https://www.cug.ac.in' },
+      { name: 'Central University of Himachal Pradesh', abbr: 'CUHP', type: 'CU', state: 'Himachal Pradesh', est: 2009, site: 'https://www.cuhimachal.ac.in' },
+      { name: 'Central University of Jharkhand', abbr: 'CUJH', type: 'CU', state: 'Jharkhand', est: 2009, site: 'https://www.cuj.ac.in' },
+      { name: 'Central University of Karnataka', abbr: 'CUK', type: 'CU', state: 'Karnataka', est: 2009, site: 'https://www.cuk.ac.in' },
+      { name: 'Central University of Kerala', abbr: 'CUKL', type: 'CU', state: 'Kerala', est: 2009, site: 'https://www.cukerala.ac.in' },
+      { name: 'Central University of Punjab', abbr: 'CUPB', type: 'CU', state: 'Punjab', est: 2009, site: 'https://www.cup.edu.in' },
+      { name: 'Central University of Rajasthan', abbr: 'CURAJ', type: 'CU', state: 'Rajasthan', est: 2009, site: 'https://www.curaj.ac.in' },
+      { name: 'Central University of South Bihar', abbr: 'CUSB', type: 'CU', state: 'Bihar', est: 2009, site: 'https://www.cusb.ac.in' },
+      { name: 'Central University of Tamil Nadu', abbr: 'CUTN', type: 'CU', state: 'Tamil Nadu', est: 2009, site: 'https://www.cutn.ac.in' },
+
+      // Top Private Engineering Colleges in India (Extended)
       { name: 'Birla Institute of Technology & Science, Pilani', abbr: 'BITS', type: 'PRIVATE', state: 'Rajasthan', est: 1964, site: 'https://www.bits-pilani.ac.in' },
       { name: 'Vellore Institute of Technology', abbr: 'VIT', type: 'PRIVATE', state: 'Tamil Nadu', est: 1984, site: 'https://www.vit.ac.in' },
       { name: 'Manipal Institute of Technology', abbr: 'MIT', type: 'PRIVATE', state: 'Karnataka', est: 1957, site: 'https://manipal.edu/mu/mit.html' },
@@ -383,6 +435,31 @@
       { name: 'Bennett University', abbr: 'BENNETT', type: 'PRIVATE', state: 'Uttar Pradesh', est: 2016, site: 'https://www.bennett.edu.in' },
       { name: 'Symbiosis International University', abbr: 'SIU', type: 'PRIVATE', state: 'Maharashtra', est: 1971, site: 'https://www.syms.edu' },
       { name: 'University of Petroleum and Energy Studies', abbr: 'UPES', type: 'PRIVATE', state: 'Uttarakhand', est: 2003, site: 'https://www.upes.ac.in' },
+
+      // Additional Top-Ranked Private Engineering Institutes
+      { name: 'Kalinga Institute of Industrial Technology', abbr: 'KIIT', type: 'PRIVATE', state: 'Odisha', est: 1992, site: 'https://www.kiit.ac.in' },
+      { name: 'Birla Institute of Technology, Mesra', abbr: 'BIT MESRA', type: 'PRIVATE', state: 'Jharkhand', est: 1955, site: 'https://www.bitmesra.ac.in' },
+      { name: 'PSG College of Technology', abbr: 'PSG TECH', type: 'PRIVATE', state: 'Tamil Nadu', est: 1951, site: 'https://www.psgtech.edu' },
+      { name: 'SASTRA Deemed University', abbr: 'SASTRA', type: 'PRIVATE', state: 'Tamil Nadu', est: 1984, site: 'https://www.sastra.edu' },
+      { name: 'Amrita Vishwa Vidyapeetham', abbr: 'AMRITA', type: 'PRIVATE', state: 'Tamil Nadu', est: 2003, site: 'https://www.amrita.edu' },
+      { name: 'Chandigarh University', abbr: 'CU', type: 'PRIVATE', state: 'Punjab', est: 2012, site: 'https://www.cuchd.in' },
+      { name: 'Jaypee Institute of Information Technology', abbr: 'JIIT', type: 'PRIVATE', state: 'Uttar Pradesh', est: 2001, site: 'https://www.jiit.ac.in' },
+      { name: 'MIT World Peace University', abbr: 'MIT-WPU', type: 'PRIVATE', state: 'Maharashtra', est: 1983, site: 'https://mitwpu.edu.in' },
+      { name: 'SR University', abbr: 'SRU', type: 'PRIVATE', state: 'Telangana', est: 2020, site: 'https://www.sru.edu.in' },
+      { name: 'Bharath Institute of Higher Education and Research', abbr: 'BIHER', type: 'PRIVATE', state: 'Tamil Nadu', est: 1984, site: 'https://www.bharathuniv.ac.in' },
+      { name: 'Koneru Lakshmaiah Education Foundation', abbr: 'KLEF', type: 'PRIVATE', state: 'Andhra Pradesh', est: 1980, site: 'https://www.kluniversity.in' },
+      { name: 'Dayananda Sagar College of Engineering', abbr: 'DSCE', type: 'PRIVATE', state: 'Karnataka', est: 1979, site: 'https://www.dsce.edu.in' },
+      { name: 'R.V. College of Engineering', abbr: 'RVCE', type: 'PRIVATE', state: 'Karnataka', est: 1963, site: 'https://www.rvce.edu.in' },
+      { name: 'BMS College of Engineering', abbr: 'BMSCE', type: 'PRIVATE', state: 'Karnataka', est: 1946, site: 'https://www.bmsce.ac.in' },
+      { name: 'PES University', abbr: 'PESU', type: 'PRIVATE', state: 'Karnataka', est: 1972, site: 'https://www.pes.edu' },
+      { name: 'Reva University', abbr: 'REVA', type: 'PRIVATE', state: 'Karnataka', est: 2013, site: 'https://www.reva.edu.in' },
+      { name: 'Galgotias University', abbr: 'GU', type: 'PRIVATE', state: 'Uttar Pradesh', est: 2011, site: 'https://www.galgotiasuniversity.edu.in' },
+      { name: 'Graphic Era University', abbr: 'GEU', type: 'PRIVATE', state: 'Uttarakhand', est: 1993, site: 'https://www.geu.ac.in' },
+      { name: 'SRM University, AP – Amaravati', abbr: 'SRM AP', type: 'PRIVATE', state: 'Andhra Pradesh', est: 2017, site: 'https://srmap.edu.in' },
+      { name: 'SRM University, Haryana', abbr: 'SRM HARYANA', type: 'PRIVATE', state: 'Haryana', est: 2013, site: 'https://www.srmuniversity.ac.in' },
+      { name: 'Amrita School of Engineering, Coimbatore', abbr: 'ASE', type: 'PRIVATE', state: 'Tamil Nadu', est: 1994, site: 'https://www.amrita.edu/school/engineering/coimbatore' },
+      { name: 'KLE Technological University', abbr: 'KLE TECH', type: 'PRIVATE', state: 'Karnataka', est: 1947, site: 'https://www.kletech.ac.in' },
+      { name: 'Vel Tech Rangarajan Dr. Sagunthala R&D Institute of Science and Technology', abbr: 'VEL TECH', type: 'PRIVATE', state: 'Tamil Nadu', est: 1997, site: 'https://www.veltech.edu.in' },
 
       // DU Colleges (snapshot from DU official list)
       { name: 'Aditi Mahavidyalaya', abbr: 'ADITI', type: 'DU', state: 'Delhi', est: null, site: '' },
